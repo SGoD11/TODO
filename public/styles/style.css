@@ -4,15 +4,26 @@ html {
 }
 h1{
   font-family: 'Cedarville Cursive', cursive;
-  animation: 5s pulseDance infinite;
+  animation: 10s pulse infinite;
   margin-top: auto;
+  text-decoration: underline;
+  text-shadow: 1.5rem;
+  font-weight: bolder;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
 footer {
   
   color: aqua;
+  
   background-color: blueviolet;
   text-align: center;
+  
+}
+footer>div{
+  animation: 3s pulse infinite;
+  font-weight: bolder;
 }
 
 .center-container {
