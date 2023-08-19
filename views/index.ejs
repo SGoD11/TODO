@@ -3,15 +3,17 @@
     <div class="center-container">
         <div class="center-content all-content">
             <!-- Your content goes here -->
-
+            <h1>Today</h1>
             <div class="ulItems">
                 <% if(locals.display){ %>
                     <div id="taskList">
                         <% display.forEach(element=> { %>
+                            <form action="/delete" method="post">
                             <li id="listElemnts">
-                                <input type="checkbox" name="checkbox" id="checkbox" class="taskCheckbox">
-                                <%= element %>
+                                <input type="checkbox" name="checkbox" id="checkbox" class="taskCheckbox" value="<%= element._id %>" onChange="this.form.submit()">
+                                <%= element.name %>
                             </li>
+                        </form>
                             <% }); %>
 
 
@@ -23,7 +25,7 @@
                         <% } %>
             </div>
 
-            <form action="/createTask" method="post">
+            <form action="/createTask" method="post" class="item">
 
                 <input type="text" name="newTask" id="newtask" class="text-area" placeholder="new item">
 

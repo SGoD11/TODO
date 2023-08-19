@@ -36,7 +36,7 @@ const foundItems = await Item.find();
 const workItems = await Work.find();
 
 
-console.log("Thers is the found items in upper part", foundItems);
+// console.log("Thers is the found items in upper part", foundItems);
 
 // starting from here
 app.get("/",  async function (req, res) {
@@ -54,8 +54,8 @@ app.get("/",  async function (req, res) {
         else {
             //for reading data
             const finalFound = await Item.find();
-            console.log("Final found", finalFound);
-            console.log("Thers is the found items in else part", foundItems);
+            // console.log("Final found", finalFound);
+            // console.log("Thers is the found items in else part", foundItems);
             res.render("index.ejs", {
                 display: finalFound,
             });
@@ -86,6 +86,23 @@ app.post('/createTask', async (req, res) => {
     res.render("index.ejs",{
         display: itemsFoun
     });
+});
+
+//for deleting
+app.post("/delete",async(req,res)=>{
+    // console.log(req.body.checkbox);
+    const checkedItemId = req.body.checkbox;
+    console.log("Item id is = ",checkedItemId);
+    try {
+        await Item.findByIdAndRemove(checkedItemId);
+        console.log("Successfully deleted");
+    } catch (error) {
+        console.log("There was an interrupt\n",error);
+    }
+    setTimeout(() => {
+        res.redirect("/");
+      }, "1000");
+    
 });
 
 
@@ -132,6 +149,24 @@ app.post('/work', async (req, res) => {
         display:itemsFoun
     });
 });
+
+//for deleting
+app.post("/deleteWork",async(req,res)=>{
+    // console.log(req.body.checkbox);
+    const checkedItemId = req.body.checkbox;
+    console.log("Item id is = ",checkedItemId);
+    try {
+        await Work.findByIdAndRemove(checkedItemId);
+        console.log("Successfully deleted");
+    } catch (error) {
+        console.log("There was an interrupt\n",error);
+    }
+    setTimeout(() => {
+        res.redirect("/work");
+      }, "1000");
+    
+});
+
 
 
 //for online of the port
