@@ -28,8 +28,14 @@ const Item2 = new Item({
 const Item3 = new Item({
     name: "The Work That Is Very Important And Takes Time To Complete"
 });
+const defaultItems = [Item1,Item2,Item3];
 
+const listSchema = {
+    name: String,
+    items: [itemsSchema]
+}
 
+const List = mongoose.model("List", listSchema);
 
 //just for storing the value of the inserted items or docs
 const foundItems = await Item.find();
@@ -37,6 +43,8 @@ const workItems = await Work.find();
 
 
 // console.log("Thers is the found items in upper part", foundItems);
+
+
 
 // starting from here
 app.get("/",  async function (req, res) {
@@ -88,7 +96,7 @@ app.post('/createTask', async (req, res) => {
     });
 });
 
-//for deleting
+//for deleting items
 app.post("/delete",async(req,res)=>{
     // console.log(req.body.checkbox);
     const checkedItemId = req.body.checkbox;
@@ -150,7 +158,7 @@ app.post('/work', async (req, res) => {
     });
 });
 
-//for deleting
+//for deleting works
 app.post("/deleteWork",async(req,res)=>{
     // console.log(req.body.checkbox);
     const checkedItemId = req.body.checkbox;
@@ -167,7 +175,37 @@ app.post("/deleteWork",async(req,res)=>{
     
 });
 
+//time for urls customs
+app.get("/:paraname",async (req,res)=>{
+    console.log(req.params.paraname);
+    const customListName = req.params.paraname;
+    
+       
+        const query = List.where({ name: customListName });
+        const TheItem = await query.findOne();
+        
+        if(TheItem.name == customListName){
+            console.log("Exists");
+            //show existing list
+            res.render("list.ejs",{
+                header: customListName,
+                display: TheItem.items,
+            });
+            console.log(TheItem.items);
+        }
+        else{
 
+            console.log("Doesn't exists");
+            //create a list
+            const list = new List({
+                name: customListName,
+                items: defaultItems
+            });
+            list.save();
+            res.redirect("/"+customListName);
+        }
+        // console.log(TheItem.name); --> name of customlist name
+});
 
 //for online of the port
 app.listen(port, function () {
